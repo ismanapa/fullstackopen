@@ -7,11 +7,19 @@ const Header = ({ title }) => (
     </h1>
 );
 
+const Button = ({ onClick, text }) => (
+    <button onClick={onClick}>{text}</button>
+);
+
+const Statistic = ({ value, text }) => (
+    <p>{text} {value}</p>
+);
+
 const FeedbackSetter = ({ onFeedbackGood, onFeedbackNeutral, onFeedbackBad }) => (
     <div>
-        <button onClick={onFeedbackGood}>good</button>
-        <button onClick={onFeedbackNeutral}>neutral</button>
-        <button onClick={onFeedbackBad}>bad</button>
+        <Button onClick={onFeedbackGood} text={'good'} />
+        <Button onClick={onFeedbackNeutral} text={'neutral'} />
+        <Button onClick={onFeedbackBad} text={'bad'} />
     </div>
 );
 
@@ -25,12 +33,12 @@ const Statistics = ({ good, neutral, bad }) => {
 
     return (
         <div>
-            <p>good {good}</p>
-            <p>neutral {neutral}</p>
-            <p>bad {bad}</p>
-            <p>all {total}</p>
-            <p>average {score / total}</p>
-            <p>positive {good / total * 100} %</p>
+            <Statistic value={good} text={'good'} />
+            <Statistic value={neutral} text={'neutral'} />
+            <Statistic value={bad} text={'bad'} />
+            <Statistic value={total} text={'all'} />
+            <Statistic value={score / total} text={'average'} />
+            <Statistic value={good / total * 100} text={'positive'} />
         </div>
     );
 };
