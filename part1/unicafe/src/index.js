@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-const Header = () => (
+const Header = ({ title }) => (
     <h1>
-        give feedback
+        {title}
     </h1>
 );
 
@@ -19,9 +19,12 @@ const Statistics = ({ good, neutral, bad }) => {
     const total = good + neutral + bad;
     const score = good * 1 - bad * 1;
 
+    if (total === 0) {
+        return <p>No feedback given</p>
+    }
+
     return (
         <div>
-            <h1>statistics</h1>
             <p>good {good}</p>
             <p>neutral {neutral}</p>
             <p>bad {bad}</p>
@@ -52,11 +55,12 @@ const App = () => {
 
     return (
         <>
-            <Header />
+            <Header title={'give feedback'} />
             <FeedbackSetter
                 onFeedbackGood={increaseGoodFeedback}
                 onFeedbackNeutral={increaseNeutralFeedback}
                 onFeedbackBad={increaseBadFeedback} />
+            <Header title={'statistics'} />
             <Statistics
                 good={good}
                 neutral={neutral}
