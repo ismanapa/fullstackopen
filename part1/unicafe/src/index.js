@@ -15,14 +15,22 @@ const FeedbackSetter = ({ onFeedbackGood, onFeedbackNeutral, onFeedbackBad }) =>
     </div>
 );
 
-const Statistics = ({ good, neutral, bad }) => (
-    <div>
-        <h1>statistics</h1>
-        <p>good {good}</p>
-        <p>neutral {neutral}</p>
-        <p>bad {bad}</p>
-    </div>
-);
+const Statistics = ({ good, neutral, bad }) => {
+    const total = good + neutral + bad;
+    const score = good * 1 - bad * 1;
+
+    return (
+        <div>
+            <h1>statistics</h1>
+            <p>good {good}</p>
+            <p>neutral {neutral}</p>
+            <p>bad {bad}</p>
+            <p>all {total}</p>
+            <p>average {score / total}</p>
+            <p>positive {good / total * 100} %</p>
+        </div>
+    );
+};
 
 const App = () => {
     // save clicks of each button to own state
@@ -49,10 +57,10 @@ const App = () => {
                 onFeedbackGood={increaseGoodFeedback}
                 onFeedbackNeutral={increaseNeutralFeedback}
                 onFeedbackBad={increaseBadFeedback} />
-            <Statistics 
+            <Statistics
                 good={good}
                 neutral={neutral}
-                bad={bad}/>
+                bad={bad} />
         </>
     );
 }
