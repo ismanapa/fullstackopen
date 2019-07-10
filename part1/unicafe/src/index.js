@@ -12,7 +12,10 @@ const Button = ({ onClick, text }) => (
 );
 
 const Statistic = ({ value, text }) => (
-    <p>{text} {value}</p>
+    <tr>
+        <td>{text}</td>
+        <td>{value}</td>
+    </tr>
 );
 
 const FeedbackSetter = ({ onFeedbackGood, onFeedbackNeutral, onFeedbackBad }) => (
@@ -32,14 +35,16 @@ const Statistics = ({ good, neutral, bad }) => {
     }
 
     return (
-        <div>
-            <Statistic value={good} text={'good'} />
-            <Statistic value={neutral} text={'neutral'} />
-            <Statistic value={bad} text={'bad'} />
-            <Statistic value={total} text={'all'} />
-            <Statistic value={score / total} text={'average'} />
-            <Statistic value={good / total * 100} text={'positive'} />
-        </div>
+        <table>
+            <tbody>
+                <Statistic value={good} text={'good'} />
+                <Statistic value={neutral} text={'neutral'} />
+                <Statistic value={bad} text={'bad'} />
+                <Statistic value={total} text={'all'} />
+                <Statistic value={score / total} text={'average'} />
+                <Statistic value={good / total * 100} text={'positive'} />
+            </tbody>
+        </table>
     );
 };
 
