@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import Filter from './components/filter';
-import PersonForm  from './components/personForm';
-import Persons  from './components/persons';
+import PersonForm from './components/personForm';
+import Persons from './components/persons';
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '040-123456' },
-    { name: 'Ada Lovelace', phone: '39-44-5323523' },
-    { name: 'Dan Abramov', phone: '12-43-234345' },
-    { name: 'Mary Poppendieck', phone: '39-23-6423122' }
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newPhone, setNewPhone] = useState('');
   const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
+
 
   const handleNameChange = event => setNewName(event.target.value);
   const handlePhoneChange = event => setNewPhone(event.target.value);
@@ -36,21 +41,21 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter handleFilterChange={handleFilterChange} filter={filter} /> 
+      <Filter handleFilterChange={handleFilterChange} filter={filter} />
 
       <h2>add new</h2>
 
-      <PersonForm 
+      <PersonForm
         name={newName}
         phone={newPhone}
         handleNameChange={handleNameChange}
         handlePhoneChange={handlePhoneChange}
-        onSubmit={addNewPerson}/>
+        onSubmit={addNewPerson} />
 
-     
+
       <h2>Numbers</h2>
-      
-      <Persons persons={persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()))}/>
+
+      <Persons persons={persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()))} />
 
     </div>
   )
