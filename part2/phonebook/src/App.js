@@ -37,13 +37,21 @@ const App = () => {
     phonesService
       .create(newPerson)
       .then(response => {
-        setPersons(persons.concat(response.data))
+        setPersons(persons.concat(response))
         setNewName('');
         setNewPhone('');
       });
 
   };
 
+  const deletePerson = person => () => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      phonesService.remove(person.id)
+        .then(() => {
+          setPersons(persons.filter(p => p.id !== person.id));
+        });
+    }
+  };
 
   return (
     <div>
@@ -62,7 +70,9 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons persons={persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()))} />
+      <Persons
+        onDelete={deletePerson}
+        persons={persons.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()))} />
 
     </div>
   )
