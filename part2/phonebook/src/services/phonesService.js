@@ -15,11 +15,19 @@ const create = newPhone => {
         .then(response => {
             return response.data;
         })
-}
+};
 
 const remove = id => {
     return axios
         .delete(`${baseUrl}/${id}`);
-}
+};
 
-export default { getAll, create, remove };
+const update = phone => {
+    return axios
+        .put(`${baseUrl}/${phone.id}`, phone)
+        .then(response => {
+            return response.data
+        });
+};
+
+export default { getAll, create, remove, update };
