@@ -38,11 +38,16 @@ app.get('/api/persons', (req, res) => {
 app.post('/api/persons', (req, res) => {
     const body = req.body;
 
-    if (!body.name || !body.phone) {
-        return response.status(400).json({
+    if (!body.name || !body.phone)
+        return res.status(400).json({
             error: 'content missing'
-        })
-    }
+        });
+
+    const nameExists = persons.some(p => p.name === body.name);
+    if (nameExists)
+        return res.status(400).json({
+            error: 'name must be unique'
+        });
 
     const person = {
         name: body.name,
