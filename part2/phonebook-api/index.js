@@ -1,6 +1,8 @@
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
+
+const app = express();
 
 let persons = [
     {
@@ -29,7 +31,9 @@ const generateId = () => {
     return Math.floor(Math.random() * 100000);
 };
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(morgan('tiny'));
+
 
 app.get('/api/persons', (req, res) => {
     res.json(persons)
