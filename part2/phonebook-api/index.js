@@ -78,7 +78,7 @@ app.get('/api/persons/:id', (req, res) => {
     const person = persons.find(p => p.id === id);
 
     if (!person)
-        return res.send(404);
+        return res.sendStatus(404);
 
     res.json(person);
 });
@@ -86,7 +86,7 @@ app.get('/api/persons/:id', (req, res) => {
 app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id);
     persons = persons.filter(p => p.id !== id);
-    return res.send(204);
+    return res.sendStatus(204);
 });
 
 
