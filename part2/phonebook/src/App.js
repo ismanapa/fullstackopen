@@ -65,7 +65,7 @@ const App = () => {
             setErrorMessage(`Information of '${existingPerson.name}' has already been removed from server`);
             setTimeout(() => {
               setErrorMessage(null)
-            }, 5000)
+            }, 5000);
             setPersons(persons.filter(p => p.id !== existingPerson.id))
           });
 
@@ -79,8 +79,13 @@ const App = () => {
           setNewName('');
           setNewPhone('');
           setSuccessMessage(`Added ${response.name}`);
+        })
+        .catch(error  => {
+          setErrorMessage(error.response.data.error);
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000);
         });
-
     }
 
   };
