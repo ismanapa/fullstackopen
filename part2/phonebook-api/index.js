@@ -81,11 +81,18 @@ app.delete('/api/persons/:id', (req, res, next) => {
 
 
 app.get('/info', (req, res) => {
-    const response = `
-        <p>Phonebook has info for ${persons.length} people</p>
-        <p>${Date()}</p>
-    `;
-    res.send(response)
+
+    Person.find({})
+        .then(persons => {
+            const response = `
+                <p>Phonebook has info for ${persons.length} people</p>
+                <p>${Date()}</p>
+                `;
+            res.send(response)
+        })
+        .catch(error => next(error));
+
+
 });
 
 const errorHandler = (error, request, response, next) => {
