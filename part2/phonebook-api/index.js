@@ -32,24 +32,15 @@ app.post('/api/persons', (req, res, next) => {
             error: 'content missing'
         });
 
-    Person
-        .find({ name: body.name })
-        .then(personsWithName => {
+    const person = new Person({
+        name: body.name,
+        phone: body.phone,
+    });
 
-            if (personsWithName.length !== 0)
-                return res.status(400).json({
-                    error: 'name must be unique'
-                });
+    person.save()
+        .then(savedPerson => res.json(savedPerson))
+        .catch(error => next(error));
 
-            const person = new Person({
-                name: body.name,
-                phone: body.phone,
-            });
-
-            person.save()
-                .then(savedPerson => res.json(savedPerson))
-                .catch(error => next(error));
-        });
 });
 
 app.put('/api/persons/:id', (req, res, next) => {
@@ -99,7 +90,9 @@ const errorHandler = (error, request, response, next) => {
     console.error(error.message)
 
     if (error.name === 'CastError' && error.kind == 'ObjectId') {
-        return response.status(400).send({ error: 'malformatted id' })
+        return response.status(400).send({ error: 'malformatted id' });
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message });
     }
 
     next(error)
