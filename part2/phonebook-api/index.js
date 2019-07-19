@@ -7,10 +7,6 @@ const Person = require('./models/person');
 
 const app = express();
 
-const generateId = () => {
-    return Math.floor(Math.random() * 100000);
-};
-
 app.use(bodyParser.json());
 
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) });
@@ -37,21 +33,24 @@ app.post('/api/persons', (req, res) => {
             error: 'content missing'
         });
 
-    const nameExists = persons.some(p => p.name === body.name);
-    if (nameExists)
-        return res.status(400).json({
-            error: 'name must be unique'
+    Person
+        .find({ name: body.name })
+        .then(personsWithName => {
+
+            if (personsWithName.length !== 0)
+                return res.status(400).json({
+                    error: 'name must be unique'
+                });
+
+            const person = new Person({
+                name: body.name,
+                phone: body.phone,
+            });
+
+            person.save()
+                .then(savedPerson => res.json(savedPerson));
+
         });
-
-    const person = {
-        name: body.name,
-        phone: body.phone,
-        id: generateId(),
-    };
-
-    persons = persons.concat(person)
-
-    res.json(person);
 });
 
 
