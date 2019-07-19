@@ -1,31 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
-const app = express();
+const Person = require('./models/person');
 
-let persons = [
-    {
-        "name": "Arto Hellas",
-        "phone": "2222",
-        "id": 1
-    },
-    {
-        "name": "Ada Lovelace",
-        "phone": "39-44-5323523",
-        "id": 2
-    },
-    {
-        "name": "Dan Abramov",
-        "phone": "12-43-234345",
-        "id": 3
-    },
-    {
-        "name": "Mary Poppendieck",
-        "phone": "39-23-6423122",
-        "id": 4
-    }
-];
+const app = express();
 
 const generateId = () => {
     return Math.floor(Math.random() * 100000);
@@ -43,7 +23,10 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    Person.find({})
+        .then(persons => {
+            res.json(persons);
+        });
 });
 
 app.post('/api/persons', (req, res) => {
