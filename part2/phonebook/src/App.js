@@ -49,7 +49,7 @@ const App = () => {
 
     if (existingPerson) {
       if (window.confirm(`${existingPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
-        
+
         phonesService
           .update({
             ...existingPerson,
@@ -87,7 +87,8 @@ const App = () => {
 
   const deletePerson = person => () => {
     if (window.confirm(`Delete ${person.name}?`)) {
-      phonesService.remove(person.id)
+      phonesService
+        .remove(person.id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== person.id));
           setSuccessMessage(`Deleted ${person.name}`);
