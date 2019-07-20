@@ -17,8 +17,32 @@ const favoriteBlog = blogs => {
 	return sortedBlogs[0];
 };
 
+const mostBlogs = blogs => {
+	const mostBlogs = blogs
+		.reduce((ac, blog) => {
+			const itemIndex = ac.findIndex(b => b.author === blog.author);
+
+			if (itemIndex >= 0) {
+				ac[itemIndex].blogs++;
+			} else {
+				ac.push({
+					author: blog.author,
+					blogs: 1
+				});
+			}
+
+			return ac;
+		}, [])
+		.sort((a, b) => {
+			return b.blogs - a.blogs;
+		});
+	console.log(mostBlogs);
+	return mostBlogs[0];
+};
+
 module.exports = {
 	dummy,
 	totalLikes,
 	favoriteBlog,
+	mostBlogs,
 };
