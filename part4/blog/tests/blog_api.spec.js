@@ -33,7 +33,7 @@ describe('blog api', () => {
 		await Blog.deleteMany({});
 
 		const blogObjects = initialBlogs
-			.map(blog => new Blog(blog))
+			.map(blog => new Blog(blog));
 		const promiseArray = blogObjects.map(blog => blog.save());
 
 		await Promise.all(promiseArray);
@@ -124,6 +124,26 @@ describe('blog api', () => {
 		});
 	});
 
+	describe('delete blog', () => {
+		
+		test('Delete blog by id', async () => {
+			const blogsAtStart = await api.get('/api/blogs');
+			const blog = blogsAtStart.body[0];
+
+			await api
+				.delete(`/api/blogs/${blog.id}`)
+				.expect(204);
+
+			const blogsAtEnd = await api.get('/api/blogs');
+
+			expect(blogsAtEnd.body.length).toBe(blogsAtStart.body.length - 1);
+			
+			const titles = blogsAtEnd.body.map(b => b.title);
+
+			expect(titles).not.toContain(blog.title);
+		});
+
+	});
 
 	afterAll(() => {
 		mongoose.connection.close();
