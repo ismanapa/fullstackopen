@@ -78,11 +78,25 @@ describe('blog api', () => {
 				.expect('Content-Type', /application\/json/);
 
 			const currentBlogs = await api.get('/api/blogs');
-			
+
 			expect(currentBlogs.body.length).toBe(initialBlogs.length + 1);
 
 			const titles = currentBlogs.body.map(n => n.title);
 			expect(titles).toContain(newBlog.title);
+		});
+
+		test('Blogs like equals 0 when property is missing in body', async () => {
+			const newBlog = {
+				title: 'newBlog',
+				author: 'newAuthor',
+				url: 'new url',
+			};
+
+			const result = await api
+				.post('/api/blogs')
+				.send(newBlog);
+
+			expect(result.body.likes).toBe(0);
 		});
 	});
 
