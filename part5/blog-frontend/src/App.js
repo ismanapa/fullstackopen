@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 
 import loginService from './services/login';
 import blogService from './services/blogs';
 import Notification from './components/notification';
 import Blog from './components/blog';
+import BlogForm from './components/blogForm';
 
 const App = () => {
 
+	const [title, setTitle] = useState('');
+	const [author, setAuthor] = useState('');
+	const [url, setUrl] = useState('');
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [user, setUser] = useState(null);
@@ -14,6 +18,7 @@ const App = () => {
 
 
 	const [errorMessage, setErrorMessage] = useState('');
+	const [notificationMessage, setNotificationMessage] = useState('');
 
 	useEffect(() => {
 		async function fetchData() {
@@ -24,10 +29,12 @@ const App = () => {
 	}, []);
 
 	useEffect(() => {
-		const user = window.localStorage.getItem('user');
+		const userJson = window.localStorage.getItem('user');
 
-		if (user) {
-			setUser(JSON.parse(user));
+		if (userJson) {
+			const user = JSON.parse(userJson);
+			setUser(user);
+			blogService.setToken(user.token);
 		}
 
 	}, []);
@@ -46,7 +53,7 @@ const App = () => {
 			setUser(user);
 			setUsername('');
 			setPassword('');
-
+			blogService.setToken(user.token);
 
 
 		} catch (exception) {
@@ -61,12 +68,39 @@ const App = () => {
 		event.preventDefault();
 		window.localStorage.removeItem('user');
 		setUser(null);
+		blogService.unsetToken();
 	};
+
+	const addBlog = async (event) => {
+		event.preventDefault();
+		const blogObject = {
+			title,
+			author,
+			url
+		};
+
+		const returnedBlog = await blogService.create(blogObject);
+
+		setBlogs(blogs.concat(returnedBlog));
+		setTitle('');
+		setAuthor('');
+		setUrl('');
+
+		setNotificationMessage(
+			`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`
+		);
+		setTimeout(() => {
+			setNotificationMessage(null);
+		}, 2000);
+	};
+
+
 
 	if (user === null) {
 		return (
 			<div>
 				{errorMessage && <Notification isError={true} message={errorMessage} />}
+				{notificationMessage && <Notification isError={false} message={notificationMessage} />}
 
 				<h2>Log in to application</h2>
 				<form onSubmit={handleLogin}>
@@ -96,9 +130,54 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<h2>blogs</h2>
-			<p>{user.username} logged in <button onClick={handleLogout}>logout</button></p>
-			{blogs && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+			{errorMessage && <Notification isError={true} message={errorMessage} />}
+			{notificationMessage && <Notification isError={false} message={notificationMessage} />}
+			{
+				user ?
+					(
+						<Fragment>
+							<h2>blogs</h2>
+							<p>{user.username} logged in <button onClick={handleLogout}>logout</button></p>
+							<h2>create new</h2>
+							<BlogForm
+								onSubmit={addBlog}
+								title={title}
+								author={author}
+								url={url}
+								handleTitleChange={({ target }) => setTitle(target.value)}
+								handleAuthorChange={({ target }) => setAuthor(target.value)}
+								handleUrlChange={({ target }) => setUrl(target.value)}
+							/>
+							{blogs && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+						</Fragment>
+					) : (
+						<Fragment>
+
+							<h2>Log in to application</h2>
+							<form onSubmit={handleLogin}>
+								<div>
+									username
+									<input
+										type="text"
+										value={username}
+										name="Username"
+										onChange={({ target }) => setUsername(target.value)}
+									/>
+								</div>
+								<div>
+									password
+									<input
+										type="password"
+										value={password}
+										name="Password"
+										onChange={({ target }) => setPassword(target.value)}
+									/>
+								</div>
+								<button type="submit">login</button>
+							</form>
+						</Fragment>
+					)
+			}
 		</div>
 	);
 };
