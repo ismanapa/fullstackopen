@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVkM2IxYWM2MTYzMGMyNGQyYzU3NDBiNSIsImlhdCI6MTU2NDE1NjY5MH0.L5jgCMLkL30jlyu6CN9prUs8fdJV_RcS5atgzVk6dvI
+
+{
+  "title": "Test Blog",
+  "author": "Test User",
+  "url": "https://www.google.com",
+  "likes": 100
+}
