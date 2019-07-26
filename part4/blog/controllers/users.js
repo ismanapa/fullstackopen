@@ -6,6 +6,10 @@ usersRouter.post('/', async (request, response, next) => {
 	try {
 		const body = request.body;
 
+		if (!body.password) {
+			return response.sendStatus(400);
+		}
+
 		const saltRounds = 10;
 		const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
