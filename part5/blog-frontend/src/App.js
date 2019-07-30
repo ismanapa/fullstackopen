@@ -177,6 +177,7 @@ const App = () => {
 											blog={blog}
 											handleLike={likeBlog}
 											handleRemove={removeBlog}
+											currentUser={user}
 										/>)
 								}
 							</div>
