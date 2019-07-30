@@ -95,7 +95,10 @@ const App = () => {
 		}, 2000);
 	};
 
-
+	const likeBlog = async (id) => {
+		const newData = await blogService.like(id);
+		setBlogs(blogs.map(blog => blog.id !== newData.id ? blog : newData));
+	};
 
 	if (user === null) {
 		return (
@@ -153,7 +156,9 @@ const App = () => {
 							</Toggable>
 
 							<div style={{ marginTop: 20 }}>
-								{blogs && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+								{blogs && blogs.map(blog =>
+									<Blog key={blog.id} blog={blog} handleLike={likeBlog} />)
+								}
 							</div>
 
 						</Fragment>
