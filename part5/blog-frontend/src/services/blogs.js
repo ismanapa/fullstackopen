@@ -32,10 +32,19 @@ const like = async id => {
 	return response.data;
 };
 
+const remove = async id => {
+	const config = {
+		headers: { Authorization: token }
+	};
+	const response = await axios.delete(`${baseUrl}/${id}`, config);
+	return response.status === 204;
+};
+
 export default {
 	getAll,
 	setToken,
 	create,
 	unsetToken,
-	like
+	like,
+	remove
 };

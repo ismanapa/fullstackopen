@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, handleRemove }) => {
 	const [visible, setVisible] = useState(false);
 
 	const blogStyle = {
@@ -16,9 +16,13 @@ const Blog = ({ blog, handleLike }) => {
 		setVisible(!visible);
 	};
 
-	const clickHandler = (id) => () => {
+	const likeHandler = (id) => () => {
 		handleLike(id);
 	}
+
+	const removeHandler = (id) => () => {
+		handleRemove(id);
+	};
 
 	return (
 		<div style={blogStyle}>
@@ -29,8 +33,11 @@ const Blog = ({ blog, handleLike }) => {
 			<div style={{ display: visible ? 'block' : 'none' }} >
 				<hr />
 				<div>url: {blog.url}</div>
-				<div>likes: {blog.likes} <button onClick={clickHandler(blog.id)}>like</button> </div>
+				<div>likes: {blog.likes} <button onClick={likeHandler(blog.id)}>like</button> </div>
 				<div>added by {blog.author}</div>
+				<div>
+					<button onClick={removeHandler(blog.id)}>remove</button>
+				</div>
 			</div>
 		</div>
 	);

@@ -100,6 +100,20 @@ const App = () => {
 		setBlogs(blogs.map(blog => blog.id !== newData.id ? blog : newData));
 	};
 
+	const removeBlog = async (id) => {
+		if (window.confirm('remove blog?')) {
+			const isRemoved = await blogService.remove(id);
+			if (isRemoved) {
+				setBlogs(blogs.filter(blog => blog.id !== id));
+
+				setNotificationMessage('Blog removed');
+				setTimeout(() => {
+					setNotificationMessage(null);
+				}, 2000);
+			}
+		}
+	};
+
 	if (user === null) {
 		return (
 			<div>
@@ -159,7 +173,11 @@ const App = () => {
 								{blogs && blogs
 									.sort((a, b) => b.likes - a.likes)
 									.map(blog =>
-										<Blog key={blog.id} blog={blog} handleLike={likeBlog} />)
+										<Blog key={blog.id}
+											blog={blog}
+											handleLike={likeBlog}
+											handleRemove={removeBlog}
+										/>)
 								}
 							</div>
 
