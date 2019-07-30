@@ -18,7 +18,7 @@ const Blog = ({ blog, handleLike, handleRemove, currentUser }) => {
 
 	const likeHandler = (id) => () => {
 		handleLike(id);
-	}
+	};
 
 	const removeHandler = (id) => () => {
 		handleRemove(id);
