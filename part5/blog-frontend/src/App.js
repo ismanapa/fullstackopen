@@ -5,6 +5,7 @@ import blogService from './services/blogs';
 import Notification from './components/notification';
 import Blog from './components/blog';
 import BlogForm from './components/blogForm';
+import Toggable from './components/toggable';
 
 const App = () => {
 
@@ -138,17 +139,23 @@ const App = () => {
 						<Fragment>
 							<h2>blogs</h2>
 							<p>{user.username} logged in <button onClick={handleLogout}>logout</button></p>
-							<h2>create new</h2>
-							<BlogForm
-								onSubmit={addBlog}
-								title={title}
-								author={author}
-								url={url}
-								handleTitleChange={({ target }) => setTitle(target.value)}
-								handleAuthorChange={({ target }) => setAuthor(target.value)}
-								handleUrlChange={({ target }) => setUrl(target.value)}
-							/>
-							{blogs && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+							<Toggable buttonLabel="new note">
+								<h2>create new</h2>
+								<BlogForm
+									onSubmit={addBlog}
+									title={title}
+									author={author}
+									url={url}
+									handleTitleChange={({ target }) => setTitle(target.value)}
+									handleAuthorChange={({ target }) => setAuthor(target.value)}
+									handleUrlChange={({ target }) => setUrl(target.value)}
+								/>
+							</Toggable>
+
+							<div style={{ marginTop: 20 }}>
+								{blogs && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+							</div>
+
 						</Fragment>
 					) : (
 						<Fragment>
