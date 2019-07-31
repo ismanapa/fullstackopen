@@ -31,7 +31,7 @@ const Blog = ({ blog, handleLike, handleRemove, currentUser }) => {
 	);
 
 	return (
-		<div style={blogStyle}>
+		<div className="blog" style={blogStyle}>
 			<div className="header" onClick={toggleVisibility}>
 				{blog.title} - {blog.author}
 			</div>
