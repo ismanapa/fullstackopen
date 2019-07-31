@@ -114,38 +114,6 @@ const App = () => {
 		}
 	};
 
-	if (user === null) {
-		return (
-			<div>
-				{errorMessage && <Notification isError={true} message={errorMessage} />}
-				{notificationMessage && <Notification isError={false} message={notificationMessage} />}
-
-				<h2>Log in to application</h2>
-				<form onSubmit={handleLogin}>
-					<div>
-						username
-						<input
-							type="text"
-							value={username}
-							name="Username"
-							onChange={({ target }) => setUsername(target.value)}
-						/>
-					</div>
-					<div>
-						password
-						<input
-							type="password"
-							value={password}
-							name="Password"
-							onChange={({ target }) => setPassword(target.value)}
-						/>
-					</div>
-					<button type="submit">login</button>
-				</form>
-			</div>
-		);
-	}
-
 	return (
 		<div className="App">
 			{errorMessage && <Notification isError={true} message={errorMessage} />}
@@ -154,7 +122,7 @@ const App = () => {
 				user ?
 					(
 						<Fragment>
-							<h2>blogs</h2>
+							<h2>Blog list</h2>
 							<p>{user.username} logged in <button onClick={handleLogout}>logout</button></p>
 							<Toggable buttonLabel="new note">
 								<h2>create new</h2>
@@ -169,11 +137,12 @@ const App = () => {
 								/>
 							</Toggable>
 
-							<div style={{ marginTop: 20 }}>
+							<div className="blogList" style={{ marginTop: 20 }}>
 								{blogs && blogs
 									.sort((a, b) => b.likes - a.likes)
 									.map(blog =>
-										<Blog key={blog.id}
+										<Blog 
+											key={blog.id}
 											blog={blog}
 											handleLike={likeBlog}
 											handleRemove={removeBlog}
