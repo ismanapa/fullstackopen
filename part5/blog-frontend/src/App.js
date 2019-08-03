@@ -6,6 +6,7 @@ import Notification from './components/notification';
 import Blog from './components/blog';
 import BlogForm from './components/blogForm';
 import Toggable from './components/toggable';
+import CustomInput from './components/customInput';
 import { useField } from './hooks';
 
 const App = () => {
@@ -160,21 +161,11 @@ const App = () => {
 							<form onSubmit={handleLogin}>
 								<div>
 									username
-									<input
-										type={username.type}
-										value={username.value}
-										name="Username"
-										onChange={username.onChange}
-									/>
+									<CustomInput {...username}/>
 								</div>
 								<div>
 									password
-									<input
-										type={password.type}
-										value={password.value}
-										name="Password"
-										onChange={password.onChange}
-									/>
+									<CustomInput {...password}/>
 								</div>
 								<button type="submit">login</button>
 							</form>

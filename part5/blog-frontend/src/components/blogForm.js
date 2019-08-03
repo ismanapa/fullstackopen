@@ -1,38 +1,28 @@
 import React from 'react';
 
+import CustomInput from './customInput';
+
 const BlogForm = ({
 	onSubmit,
 	title,
 	author,
 	url,
 }) => (
-	<form onSubmit={onSubmit}>
-		<div>
+		<form onSubmit={onSubmit}>
+			<div>
 				title
-			<input
-				type="text"
-				value={title.value}
-				onChange={title.onChange}
-			/>
-		</div>
-		<div>
+				<CustomInput {...title} />
+			</div>
+			<div>
 				author
-			<input
-				type="text"
-				value={author.value}
-				onChange={author.onChange}
-			/>
-		</div>
-		<div>
+				<CustomInput {...author} />
+			</div>
+			<div>
 				url
-			<input
-				type="text"
-				value={url.value}
-				onChange={url.onChange}
-			/>
-		</div>
-		<button type="submit">create</button>
-	</form>
-);
+				<CustomInput {...url} />
+			</div>
+			<button type="submit">create</button>
+		</form>
+	);
 
 export default BlogForm;
