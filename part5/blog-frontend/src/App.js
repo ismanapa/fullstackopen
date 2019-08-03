@@ -56,8 +56,8 @@ const App = () => {
 			);
 
 			setUser(user);
-			username.setValue('');
-			password.setValue('');
+			username.reset();
+			password.reset();
 			blogService.setToken(user.token);
 
 
@@ -87,9 +87,9 @@ const App = () => {
 		const returnedBlog = await blogService.create(blogObject);
 
 		setBlogs(blogs.concat(returnedBlog));
-		title.setValue('');
-		author.setValue('');
-		url.setValue('');
+		title.reset();
+		author.reset();
+		url.reset();
 
 		setNotificationMessage(
 			`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`
