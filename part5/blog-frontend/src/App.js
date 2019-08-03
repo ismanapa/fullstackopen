@@ -6,14 +6,17 @@ import Notification from './components/notification';
 import Blog from './components/blog';
 import BlogForm from './components/blogForm';
 import Toggable from './components/toggable';
+import { useField } from './hooks';
 
 const App = () => {
 
-	const [title, setTitle] = useState('');
-	const [author, setAuthor] = useState('');
-	const [url, setUrl] = useState('');
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
+	const title = useField('text');
+	const author = useField('text');
+	const url = useField('text');
+
+	const username = useField('text');
+	const password = useField('password');
+
 	const [user, setUser] = useState(null);
 	const [blogs, setBlogs] = useState(null);
 
@@ -44,7 +47,8 @@ const App = () => {
 		event.preventDefault();
 		try {
 			const user = await loginService.login({
-				username, password,
+				username: username.value, 
+				password: password.value,
 			});
 
 			window.localStorage.setItem(
@@ -52,8 +56,8 @@ const App = () => {
 			);
 
 			setUser(user);
-			setUsername('');
-			setPassword('');
+			username.setValue('');
+			password.setValue('');
 			blogService.setToken(user.token);
 
 
@@ -75,17 +79,17 @@ const App = () => {
 	const addBlog = async (event) => {
 		event.preventDefault();
 		const blogObject = {
-			title,
-			author,
-			url
+			title: title.value,
+			author: author.value,
+			url: url.value
 		};
 
 		const returnedBlog = await blogService.create(blogObject);
 
 		setBlogs(blogs.concat(returnedBlog));
-		setTitle('');
-		setAuthor('');
-		setUrl('');
+		title.setValue('');
+		author.setValue('');
+		url.setValue('');
 
 		setNotificationMessage(
 			`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`
@@ -131,9 +135,6 @@ const App = () => {
 									title={title}
 									author={author}
 									url={url}
-									handleTitleChange={({ target }) => setTitle(target.value)}
-									handleAuthorChange={({ target }) => setAuthor(target.value)}
-									handleUrlChange={({ target }) => setUrl(target.value)}
 								/>
 							</Toggable>
 
@@ -160,19 +161,19 @@ const App = () => {
 								<div>
 									username
 									<input
-										type="text"
-										value={username}
+										type={username.type}
+										value={username.value}
 										name="Username"
-										onChange={({ target }) => setUsername(target.value)}
+										onChange={username.onChange}
 									/>
 								</div>
 								<div>
 									password
 									<input
-										type="password"
-										value={password}
+										type={password.type}
+										value={password.value}
 										name="Password"
-										onChange={({ target }) => setPassword(target.value)}
+										onChange={password.onChange}
 									/>
 								</div>
 								<button type="submit">login</button>
