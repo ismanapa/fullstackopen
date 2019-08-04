@@ -22,7 +22,7 @@ const AnecdoteList = ({ anecdotes, filter, store }) => {
         <Fragment>
             <h2>Anecdotes</h2>
             <Notification store={store} />
-            <Filter store={store} />
+            <Filter />
             {anecdotes
                 .filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
                 .sort((a, b) => {

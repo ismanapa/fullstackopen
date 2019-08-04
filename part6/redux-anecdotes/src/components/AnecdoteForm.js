@@ -1,18 +1,19 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 
 import { createAnecdote } from '../reducers/anecdoteReducer';
 import { setNotification, resetNotification } from '../reducers/notificationReducer';
 
-const AnecdoteForm = ({ store }) => {
+const AnecdoteForm = ({ createAnecdote, setNotification, resetNotification }) => {
 
     const create = event => {
         event.preventDefault();
-        store.dispatch(createAnecdote(event.target.anecdote.value));
+        createAnecdote(event.target.anecdote.value);
 
-        store.dispatch(setNotification(`Anecdote created '${event.target.anecdote.value}'`))
+        setNotification(`Anecdote created '${event.target.anecdote.value}'`);
 
         setTimeout(() => {
-            store.dispatch(resetNotification());
+            resetNotification();
         }, 5000);
 
         event.target.anecdote.value = '';
@@ -29,4 +30,10 @@ const AnecdoteForm = ({ store }) => {
     );
 };
 
-export default AnecdoteForm;
+const mapDispatchToProps = {
+    createAnecdote,
+    setNotification,
+    resetNotification
+};
+
+export default connect(null, mapDispatchToProps)(AnecdoteForm);
