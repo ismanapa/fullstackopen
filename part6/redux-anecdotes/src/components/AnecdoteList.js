@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react';
 
 import Notification from './Notification';
+import Filter from './Filter';
 
 import { voteAnecdote } from '../reducers/anecdoteReducer';
 import { setNotification, resetNotification } from '../reducers/notificationReducer';
 
 const AnecdoteList = ({ store }) => {
 
-    const anecdotes = store.getState().anecdotes;
+    const { anecdotes, filter } = store.getState();
 
     const vote = anecdote => {
         store.dispatch(voteAnecdote(anecdote.id));
@@ -22,7 +23,9 @@ const AnecdoteList = ({ store }) => {
         <Fragment>
             <h2>Anecdotes</h2>
             <Notification store={store} />
+            <Filter store={store} />
             {anecdotes
+                .filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
                 .sort((a, b) => {
                     return b.votes - a.votes;
                 })
