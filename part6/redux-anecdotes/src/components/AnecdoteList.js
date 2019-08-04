@@ -1,17 +1,27 @@
 import React, { Fragment } from 'react';
+
+import Notification from './Notification';
+
 import { voteAnecdote } from '../reducers/anecdoteReducer';
+import { setNotification, resetNotification } from '../reducers/notificationReducer';
 
 const AnecdoteList = ({ store }) => {
 
     const anecdotes = store.getState().anecdotes;
 
-    const vote = id => {
-        store.dispatch(voteAnecdote(id));
+    const vote = anecdote => {
+        store.dispatch(voteAnecdote(anecdote.id));
+        store.dispatch(setNotification(`You voted '${anecdote.content}'`))
+
+        setTimeout(() => {
+            store.dispatch(resetNotification());
+        }, 5000);
     };
 
     return (
         <Fragment>
             <h2>Anecdotes</h2>
+            <Notification store={store} />
             {anecdotes
                 .sort((a, b) => {
                     return b.votes - a.votes;
@@ -23,7 +33,7 @@ const AnecdoteList = ({ store }) => {
                         </div>
                         <div>
                             has {anecdote.votes}
-                            <button onClick={() => vote(anecdote.id)}>vote</button>
+                            <button onClick={() => vote(anecdote)}>vote</button>
                         </div>
                     </div>
                 )}

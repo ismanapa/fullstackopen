@@ -1,12 +1,20 @@
 import React, { Fragment } from 'react';
 
 import { createAnecdote } from '../reducers/anecdoteReducer';
+import { setNotification, resetNotification } from '../reducers/notificationReducer';
 
 const AnecdoteForm = ({ store }) => {
 
     const create = event => {
         event.preventDefault();
         store.dispatch(createAnecdote(event.target.anecdote.value));
+
+        store.dispatch(setNotification(`Anecdote created '${event.target.anecdote.value}'`))
+
+        setTimeout(() => {
+            store.dispatch(resetNotification());
+        }, 5000);
+
         event.target.anecdote.value = '';
     };
 
