@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 
 import Notification from './Notification';
 import Filter from './Filter';
@@ -6,9 +7,7 @@ import Filter from './Filter';
 import { voteAnecdote } from '../reducers/anecdoteReducer';
 import { setNotification, resetNotification } from '../reducers/notificationReducer';
 
-const AnecdoteList = ({ store }) => {
-
-    const { anecdotes, filter } = store.getState();
+const AnecdoteList = ({ anecdotes, filter, store }) => {
 
     const vote = anecdote => {
         store.dispatch(voteAnecdote(anecdote.id));
@@ -44,4 +43,11 @@ const AnecdoteList = ({ store }) => {
     );
 };
 
-export default AnecdoteList;
+const mapStateToProps = ({ anecdotes, filter }) => {
+    return {
+        anecdotes,
+        filter
+    };
+};
+
+export default connect(mapStateToProps)(AnecdoteList);
