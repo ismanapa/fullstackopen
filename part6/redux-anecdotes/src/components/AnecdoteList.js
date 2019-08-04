@@ -8,8 +8,7 @@ import { voteAnecdote } from '../reducers/anecdoteReducer';
 import { setNotification, resetNotification } from '../reducers/notificationReducer';
 
 const AnecdoteList = ({
-    anecdotes,
-    filter,
+    anecdotesToShow,
     voteAnecdote,
     setNotification,
     resetNotification
@@ -29,11 +28,7 @@ const AnecdoteList = ({
             <h2>Anecdotes</h2>
             <Notification />
             <Filter />
-            {anecdotes
-                .filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
-                .sort((a, b) => {
-                    return b.votes - a.votes;
-                })
+            {anecdotesToShow
                 .map(anecdote =>
                     <div key={anecdote.id}>
                         <div>
@@ -49,10 +44,17 @@ const AnecdoteList = ({
     );
 };
 
-const mapStateToProps = ({ anecdotes, filter }) => {
+const anedoteSelector = ({ anecdotes, filter }) => {
+    return anecdotes
+        .filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
+        .sort((a, b) => {
+            return b.votes - a.votes;
+        });
+};
+
+const mapStateToProps = (state) => {
     return {
-        anecdotes,
-        filter
+        anecdotesToShow: anedoteSelector(state),
     };
 };
 
