@@ -3,9 +3,9 @@ import React from 'react';
 import AnecdoteForm from './components/AnecdoteForm';
 import AnecdoteList from './components/AnecdoteList';
 
-const App = ({ store }) => (
+const App = () => (
   <div>
-    <AnecdoteList store={store} />
+    <AnecdoteList />
     <AnecdoteForm />
   </div>
 );

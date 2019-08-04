@@ -7,21 +7,27 @@ import Filter from './Filter';
 import { voteAnecdote } from '../reducers/anecdoteReducer';
 import { setNotification, resetNotification } from '../reducers/notificationReducer';
 
-const AnecdoteList = ({ anecdotes, filter, store }) => {
+const AnecdoteList = ({
+    anecdotes,
+    filter,
+    voteAnecdote,
+    setNotification,
+    resetNotification
+}) => {
 
     const vote = anecdote => {
-        store.dispatch(voteAnecdote(anecdote.id));
-        store.dispatch(setNotification(`You voted '${anecdote.content}'`))
+        voteAnecdote(anecdote.id);
+        setNotification(`You voted '${anecdote.content}'`);
 
         setTimeout(() => {
-            store.dispatch(resetNotification());
+            resetNotification();
         }, 5000);
     };
 
     return (
         <Fragment>
             <h2>Anecdotes</h2>
-            <Notification store={store} />
+            <Notification />
             <Filter />
             {anecdotes
                 .filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
@@ -50,4 +56,10 @@ const mapStateToProps = ({ anecdotes, filter }) => {
     };
 };
 
-export default connect(mapStateToProps)(AnecdoteList);
+const mapDispatchToProps = {
+    voteAnecdote,
+    setNotification,
+    resetNotification,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnecdoteList);
