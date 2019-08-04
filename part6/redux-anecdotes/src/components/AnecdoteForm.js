@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import { createAnecdote } from '../reducers/anecdoteReducer';
 
@@ -11,10 +11,13 @@ const AnecdoteForm = ({ store }) => {
     };
 
     return (
-        <form onSubmit={create}>
-            <div><input name="anecdote" /></div>
-            <button type="submit">create</button>
-        </form>
+        <Fragment>
+            <h2>create new</h2>
+            <form onSubmit={create}>
+                <div><input name="anecdote" /></div>
+                <button type="submit">create</button>
+            </form>
+        </Fragment>
     );
 };
 
