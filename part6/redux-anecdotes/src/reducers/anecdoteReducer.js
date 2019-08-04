@@ -34,6 +34,9 @@ const reducer = (state = initialState, action) => {
         return note;
       });
 
+    case 'ADD_ANECDOTE':
+      return state.concat(asObject(action.data));
+
     default:
       return state;
   }
@@ -46,12 +49,19 @@ const voteAnecdote = id => {
     data: {
       id
     }
-  }
-}
+  };
+};
 
+const createAnecdote = data => {
+  return {
+    type: 'ADD_ANECDOTE',
+    data
+  };
+};
 
 export default reducer;
 
 export {
-  voteAnecdote
+  voteAnecdote,
+  createAnecdote
 };
