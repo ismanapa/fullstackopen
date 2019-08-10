@@ -13,7 +13,7 @@ const authorQuery = gql`
 `;
 
 const Authors = (props) => {
-  const authorsQuery = useQuery(authorQuery);
+  const authorsQuery = useQuery(authorQuery, { pollInterval: 2000 });
   if (!props.show || authorsQuery.loading) {
     return null
   }

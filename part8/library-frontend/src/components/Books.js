@@ -13,7 +13,7 @@ const allBooks = gql`
 `;
 
 const Books = (props) => {
-  const booksQuery = useQuery(allBooks);
+  const booksQuery = useQuery(allBooks, { pollInterval: 2000 });
   if (!props.show || booksQuery.loading) {
     return null
   }
